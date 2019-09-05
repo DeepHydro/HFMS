@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:wsap="http://schemas.xmlsoap.org/ws/2004/08/addressing/policy" xmlns:wsa10="http://www.w3.org/2005/08/addressing" xmlns:msc="http://schemas.microsoft.com/ws/2005/12/wsdl/contract" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:wsx="http://schemas.xmlsoap.org/ws/2004/09/mex" xmlns:wsp="http://schemas.xmlsoap.org/ws/2004/09/policy" xmlns:wsam="http://www.w3.org/2007/05/addressing/metadata" xmlns:wsa="http://schemas.xmlsoap.org/ws/2004/08/addressing" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:wsaw="http://www.w3.org/2006/05/addressing/wsdl" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd" xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <xsd:schema targetNamespace="/Imports">
+      <xsd:import schemaLocation="http://localhost:1894/Service.svc?xsd=xsd0" />
+      <xsd:import schemaLocation="http://localhost:1894/Service.svc?xsd=xsd1" namespace="http://schemas.microsoft.com/2003/10/Serialization/" />
+      <xsd:import schemaLocation="http://localhost:1894/Service.svc?xsd=xsd2" namespace="http://schemas.microsoft.com/2003/10/Serialization/Arrays" />
+      <xsd:import schemaLocation="http://localhost:1894/Service.svc?xsd=xsd3" namespace="http://schemas.datacontract.org/2004/07/HdyroCloud.Web" />
+      <xsd:import schemaLocation="http://localhost:1894/Service.svc?xsd=xsd4" namespace="http://schemas.datacontract.org/2004/07/HdyroCloud.Web.RS" />
+      <xsd:import schemaLocation="http://localhost:1894/Service.svc?xsd=xsd5" namespace="http://schemas.datacontract.org/2004/07/HydroCloud.Web.RS" />
+    </xsd:schema>
+  </wsdl:types>
+  <wsdl:message name="Service_GetKeyWords_InputMessage">
+    <wsdl:part name="parameters" element="GetKeyWords" />
+  </wsdl:message>
+  <wsdl:message name="Service_GetKeyWords_OutputMessage">
+    <wsdl:part name="parameters" element="GetKeyWordsResponse" />
+  </wsdl:message>
+  <wsdl:message name="Service_GetSite_InputMessage">
+    <wsdl:part name="parameters" element="GetSite" />
+  </wsdl:message>
+  <wsdl:message name="Service_GetSite_OutputMessage">
+    <wsdl:part name="parameters" element="GetSiteResponse" />
+  </wsdl:message>
+  <wsdl:message name="Service_GetAllSites_InputMessage">
+    <wsdl:part name="parameters" element="GetAllSites" />
+  </wsdl:message>
+  <wsdl:message name="Service_GetAllSites_OutputMessage">
+    <wsdl:part name="parameters" element="GetAllSitesResponse" />
+  </wsdl:message>
+  <wsdl:message name="Service_GetVariableByName_InputMessage">
+    <wsdl:part name="parameters" element="GetVariableByName" />
+  </wsdl:message>
+  <wsdl:message name="Service_GetVariableByName_OutputMessage">
+    <wsdl:part name="parameters" element="GetVariableByNameResponse" />
+  </wsdl:message>
+  <wsdl:message name="Service_GetVariable_InputMessage">
+    <wsdl:part name="parameters" element="GetVariable" />
+  </wsdl:message>
+  <wsdl:message name="Service_GetVariable_OutputMessage">
+    <wsdl:part name="parameters" element="GetVariableResponse" />
+  </wsdl:message>
+  <wsdl:message name="Service_GetSites_InputMessage">
+    <wsdl:part name="parameters" element="GetSites" />
+  </wsdl:message>
+  <wsdl:message name="Service_GetSites_OutputMessage">
+    <wsdl:part name="parameters" element="GetSitesResponse" />
+  </wsdl:message>
+  <wsdl:message name="Service_GetDoubleTimeSeries_InputMessage">
+    <wsdl:part name="parameters" element="GetDoubleTimeSeries" />
+  </wsdl:message>
+  <wsdl:message name="Service_GetDoubleTimeSeries_OutputMessage">
+    <wsdl:part name="parameters" element="GetDoubleTimeSeriesResponse" />
+  </wsdl:message>
+  <wsdl:message name="Service_GetGrid_InputMessage">
+    <wsdl:part name="parameters" element="GetGrid" />
+  </wsdl:message>
+  <wsdl:message name="Service_GetGrid_OutputMessage">
+    <wsdl:part name="parameters" element="GetGridResponse" />
+  </wsdl:message>
+  <wsdl:message name="Service_GetTimeRange_InputMessage">
+    <wsdl:part name="parameters" element="GetTimeRange" />
+  </wsdl:message>
+  <wsdl:message name="Service_GetTimeRange_OutputMessage">
+    <wsdl:part name="parameters" element="GetTimeRangeResponse" />
+  </wsdl:message>
+  <wsdl:message name="Service_GetSlice_InputMessage">
+    <wsdl:part name="parameters" element="GetSlice" />
+  </wsdl:message>
+  <wsdl:message name="Service_GetSlice_OutputMessage">
+    <wsdl:part name="parameters" element="GetSliceResponse" />
+  </wsdl:message>
+  <wsdl:message name="Service_GetPointProfile_InputMessage">
+    <wsdl:part name="parameters" element="GetPointProfile" />
+  </wsdl:message>
+  <wsdl:message name="Service_GetPointProfile_OutputMessage">
+    <wsdl:part name="parameters" element="GetPointProfileResponse" />
+  </wsdl:message>
+  <wsdl:message name="Service_DownloadImage_InputMessage">
+    <wsdl:part name="parameters" element="DownloadImage" />
+  </wsdl:message>
+  <wsdl:message name="Service_DownloadImage_OutputMessage">
+    <wsdl:part name="parameters" element="DownloadImageResponse" />
+  </wsdl:message>
+  <wsdl:message name="Service_DownloadLegend_InputMessage">
+    <wsdl:part name="parameters" element="DownloadLegend" />
+  </wsdl:message>
+  <wsdl:message name="Service_DownloadLegend_OutputMessage">
+    <wsdl:part name="parameters" element="DownloadLegendResponse" />
+  </wsdl:message>
+  <wsdl:message name="Service_GetSensorImageRecord_InputMessage">
+    <wsdl:part name="parameters" element="GetSensorImageRecord" />
+  </wsdl:message>
+  <wsdl:message name="Service_GetSensorImageRecord_OutputMessage">
+    <wsdl:part name="parameters" element="GetSensorImageRecordResponse" />
+  </wsdl:message>
+  <wsdl:portType name="Service">
+    <wsdl:operation name="GetKeyWords">
+      <wsdl:input wsaw:Action="urn:Service/GetKeyWords" message="Service_GetKeyWords_InputMessage" />
+      <wsdl:output wsaw:Action="urn:Service/GetKeyWordsResponse" message="Service_GetKeyWords_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetSite">
+      <wsdl:input wsaw:Action="urn:Service/GetSite" message="Service_GetSite_InputMessage" />
+      <wsdl:output wsaw:Action="urn:Service/GetSiteResponse" message="Service_GetSite_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetAllSites">
+      <wsdl:input wsaw:Action="urn:Service/GetAllSites" message="Service_GetAllSites_InputMessage" />
+      <wsdl:output wsaw:Action="urn:Service/GetAllSitesResponse" message="Service_GetAllSites_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetVariableByName">
+      <wsdl:input wsaw:Action="urn:Service/GetVariableByName" message="Service_GetVariableByName_InputMessage" />
+      <wsdl:output wsaw:Action="urn:Service/GetVariableByNameResponse" message="Service_GetVariableByName_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetVariable">
+      <wsdl:input wsaw:Action="urn:Service/GetVariable" message="Service_GetVariable_InputMessage" />
+      <wsdl:output wsaw:Action="urn:Service/GetVariableResponse" message="Service_GetVariable_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetSites">
+      <wsdl:input wsaw:Action="urn:Service/GetSites" message="Service_GetSites_InputMessage" />
+      <wsdl:output wsaw:Action="urn:Service/GetSitesResponse" message="Service_GetSites_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetDoubleTimeSeries">
+      <wsdl:input wsaw:Action="urn:Service/GetDoubleTimeSeries" message="Service_GetDoubleTimeSeries_InputMessage" />
+      <wsdl:output wsaw:Action="urn:Service/GetDoubleTimeSeriesResponse" message="Service_GetDoubleTimeSeries_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetGrid">
+      <wsdl:input wsaw:Action="urn:Service/GetGrid" message="Service_GetGrid_InputMessage" />
+      <wsdl:output wsaw:Action="urn:Service/GetGridResponse" message="Service_GetGrid_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetTimeRange">
+      <wsdl:input wsaw:Action="urn:Service/GetTimeRange" message="Service_GetTimeRange_InputMessage" />
+      <wsdl:output wsaw:Action="urn:Service/GetTimeRangeResponse" message="Service_GetTimeRange_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetSlice">
+      <wsdl:input wsaw:Action="urn:Service/GetSlice" message="Service_GetSlice_InputMessage" />
+      <wsdl:output wsaw:Action="urn:Service/GetSliceResponse" message="Service_GetSlice_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetPointProfile">
+      <wsdl:input wsaw:Action="urn:Service/GetPointProfile" message="Service_GetPointProfile_InputMessage" />
+      <wsdl:output wsaw:Action="urn:Service/GetPointProfileResponse" message="Service_GetPointProfile_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="DownloadImage">
+      <wsdl:input wsaw:Action="urn:Service/DownloadImage" message="Service_DownloadImage_InputMessage" />
+      <wsdl:output wsaw:Action="urn:Service/DownloadImageResponse" message="Service_DownloadImage_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="DownloadLegend">
+      <wsdl:input wsaw:Action="urn:Service/DownloadLegend" message="Service_DownloadLegend_InputMessage" />
+      <wsdl:output wsaw:Action="urn:Service/DownloadLegendResponse" message="Service_DownloadLegend_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetSensorImageRecord">
+      <wsdl:input wsaw:Action="urn:Service/GetSensorImageRecord" message="Service_GetSensorImageRecord_InputMessage" />
+      <wsdl:output wsaw:Action="urn:Service/GetSensorImageRecordResponse" message="Service_GetSensorImageRecord_OutputMessage" />
+    </wsdl:operation>
+  </wsdl:portType>
+</wsdl:definitions>

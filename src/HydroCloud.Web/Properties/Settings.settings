@@ -1,0 +1,18 @@
+﻿<?xml version='1.0' encoding='utf-8'?>
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="HydroCloud.Web.Properties" GeneratedClassName="Settings">
+  <Profiles />
+  <Settings>
+    <Setting Name="DBPath" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">F:\System\Database\Pearl River Basin.mdb</Value>
+    </Setting>
+    <Setting Name="RSConfigFile" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">F:\System\HEIFLOW\VHF_GIT\HeiflowOnline\HeiflowOnline.Web\rsconfig.txt</Value>
+    </Setting>
+    <Setting Name="BaseFilePath" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">F:\System\HEIFLOW\VHF_GIT\HydroCloud\HydroCloud.Web</Value>
+    </Setting>
+    <Setting Name="RSImageCatalog" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">F:\System\HEIFLOW\VHF_GIT\HydroCloud\HydroCloud.Web\ImageBase\ImageCatalog.csv</Value>
+    </Setting>
+  </Settings>
+</SettingsFile>

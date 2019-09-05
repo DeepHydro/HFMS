@@ -1,0 +1,29 @@
+﻿<UserControl x:Class="ESRI.ArcGIS.Samples.LayerList"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+	<Grid>
+		<TextBlock Text="No layers added" Foreground="White" x:Name="noLayers" />
+		<ListBox x:Name="list" Visibility="Collapsed" Background="Transparent">
+			<ListBox.ItemTemplate>
+				<DataTemplate>
+					<StackPanel Orientation="Horizontal">
+						<StackPanel VerticalAlignment="Center">
+							<Image Source="/Images/uparrow.png" Cursor="Hand" Margin="0,1,0,0" MouseLeftButtonDown="MoveUp_MouseLeftButtonDown" Width="7" Height="4" />
+							<Image Source="/Images/uparrow.png" Cursor="Hand" Margin="0,8,0,0" MouseLeftButtonDown="MoveDown_MouseLeftButtonDown" Width="7" Height="4" >
+								<Image.RenderTransform>
+									<ScaleTransform ScaleX="1" ScaleY="-1" />
+								</Image.RenderTransform>
+							</Image>
+						</StackPanel>
+						<CheckBox IsChecked="{Binding Visible}" Content="" Margin="0"
+								  Checked="CheckBox_Checked" Unchecked="CheckBox_Checked" />
+						<Slider Margin="-5,0,0,0"
+								Minimum="0" Maximum="1" Value="{Binding Opacity}" Height="18"
+								ValueChanged="Slider_ValueChanged" Width="25" />
+						<TextBlock Foreground="White" Text="{Binding ID}" Margin="5,0,0,0" />
+					</StackPanel>
+				</DataTemplate>
+			</ListBox.ItemTemplate>			
+		</ListBox>
+	</Grid>
+</UserControl>

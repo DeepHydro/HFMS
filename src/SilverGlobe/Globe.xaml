@@ -1,0 +1,42 @@
+﻿<Canvas xmlns="http://schemas.microsoft.com/client/2007" 
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
+        x:Class="SilverGlobe.Globe"
+        Width="160"
+        Height="160"
+>
+    <Canvas.Background>
+        <LinearGradientBrush MappingMode="Absolute" StartPoint="0,0" EndPoint="0,160">
+            <GradientStop Color="#FFCCCCCC" Offset="0"/>
+            <GradientStop Color="White" Offset="0.6"/>
+            <GradientStop Color="#FF888888" Offset="1"/>
+        </LinearGradientBrush>
+    </Canvas.Background>
+
+    <!-- Clip to sphere -->
+    <Canvas.Clip>
+        <EllipseGeometry Center="80,80" RadiusX="40" RadiusY="40" x:Name="_clip" />
+    </Canvas.Clip>
+
+    <Canvas x:Name="_shapes" Width="160" Height="160">
+        <Path Fill="#FF606060" Width="160" Height="160" x:Name="Africa" />
+        <Path Fill="#FF606060" Width="160" Height="160" x:Name="America" />
+        <Path Fill="#FF606060" Width="160" Height="160" x:Name="Australia" />
+        <Path Fill="#FF606060" Width="160" Height="160" x:Name="Eurasia" />
+        <Path Width="160" Height="160" x:Name="Antarctica" Fill="White" />
+    </Canvas>
+
+    <Ellipse Width="100" Height="100"
+           RenderTransformOrigin="0.5,0.5" Canvas.Left="0"           
+  >
+        <Ellipse.Fill>
+            <LinearGradientBrush StartPoint="0,0" EndPoint="0,1" MappingMode="RelativeToBoundingBox" SpreadMethod="Pad">
+                <GradientStop Color="White" Offset="0"/>
+                <GradientStop Color="#0088CCFF" Offset="0.4"/>
+            </LinearGradientBrush>
+        </Ellipse.Fill>
+        <Ellipse.RenderTransform>
+            <ScaleTransform x:Name="_glossScale" />
+        </Ellipse.RenderTransform>
+    </Ellipse>
+
+</Canvas>

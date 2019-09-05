@@ -1,0 +1,27 @@
+﻿<Grid.Resources>
+    <!-- Converters -->
+    <esriConverters:DictionaryConverter x:Name="MyDictionaryConverter" />
+    
+    <!-- symbology for RSS Feeds -->
+    <esriSymbols:PictureMarkerSymbol x:Name="QuakePictureSymbol" Source="Images/sphere-red-32x32.png"
+                                             OffsetX="8" OffsetY="8" Width="16" />
+</Grid.Resources>
+    
+<esri:Map.Layers>
+    <!-- The Tiled Map Service Layer -->
+    <esri:ArcGISTiledMapServiceLayer ID="AGOLayer" Visible="True" 
+                                     Url="http://server.arcgisonline.com/ArcGIS/rest/services/ESRI_StreetMap_World_2D/MapServer" />
+    
+    <!-- Graphics Layers -->
+    <rssGraphicsLayer:RssGraphicsLayer ID="lyrRSS" RssUrl="http://earthquake.usgs.gov/eqcenter/catalogs/eqs7day-M2.5.xml" 
+                                                   FeedAttributeKey="MAGNITUDE" Symbol="{StaticResource sphereSymbol}">
+        <rssGraphicsLayer:RssGraphicsLayer.MapTip>
+            <Grid Background="LightYellow">
+                <StackPanel Orientation="Horizontal" Margin="5" >
+                    <TextBlock Text="{Binding Converter={StaticResource MyDictionaryConverter}, ConverterParameter=MAGNITUDE, Mode=OneWay}" />
+                </StackPanel>
+                <Border BorderBrush="Black" BorderThickness="1" />
+            </Grid>
+        </rssGraphicsLayer:RssGraphicsLayer.MapTip>
+    </rssGraphicsLayer:RssGraphicsLayer>
+</esri:Map.Layers>

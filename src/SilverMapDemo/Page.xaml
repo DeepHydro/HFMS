@@ -1,0 +1,936 @@
+﻿<UserControl x:Class="ESRI.ArcGIS.Samples.SilverMapDemo.Page"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
+	xmlns:controls="clr-namespace:System.Windows.Controls;assembly=System.Windows.Controls"
+	xmlns:esri="clr-namespace:ESRI.ArcGIS.Client;assembly=ESRI.ArcGIS.Client"
+	xmlns:esriConverters="clr-namespace:ESRI.ArcGIS.Client.ValueConverters;assembly=ESRI.ArcGIS.Client"
+	xmlns:toolkit="clr-namespace:ESRI.ArcGIS.Client.Toolkit;assembly=ESRI.ArcGIS.Client.Toolkit"
+	xmlns:symbols="clr-namespace:ESRI.ArcGIS.Client.Symbols;assembly=ESRI.ArcGIS.Client"
+    xmlns:visualizationToolkit="clr-namespace:System.Windows.Controls.DataVisualization;assembly=System.Windows.Controls.DataVisualization.Toolkit"
+	xmlns:sys="clr-namespace:System;assembly=mscorlib"
+	xmlns:local="clr-namespace:ESRI.ArcGIS.Samples"
+    xmlns:pie="clr-namespace:ESRI.ArcGIS.Samples.PieChartSymbology;assembly=ESRI.ArcGIS.Samples.PieChartSymbology"
+	xmlns:vsm="clr-namespace:System.Windows;assembly=System.Windows"
+	xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
+	Loaded="UserControl_Loaded" >
+	
+	<UserControl.Resources>
+		
+		<esriConverters:DictionaryConverter x:Name="MyDictionaryConverter" />
+		<symbols:FillSymbol x:Name="shadowFill">
+			<symbols:FillSymbol.ControlTemplate>
+				<ControlTemplate>
+					<Path x:Name="Element" Fill="#55ffffff" StrokeThickness="3" Stroke="#99ff0000"
+						  StrokeLineJoin="Round">
+						<Path.Effect>
+							<DropShadowEffect Color="Black" Direction="-45" BlurRadius="10" Opacity=".75" />
+						</Path.Effect>
+					</Path>
+				</ControlTemplate>
+			</symbols:FillSymbol.ControlTemplate>
+		</symbols:FillSymbol>
+        <symbols:LineSymbol x:Name="shadowLine">
+            <symbols:LineSymbol.ControlTemplate>
+                <ControlTemplate>
+                    <Path x:Name="Element" StrokeThickness="3" Stroke="#99ff0000"
+						  StrokeLineJoin="Round">
+                        <Path.Effect>
+                            <DropShadowEffect Color="Black" Direction="-45" BlurRadius="10" Opacity=".75" />
+                        </Path.Effect>
+                    </Path>
+                </ControlTemplate>
+            </symbols:LineSymbol.ControlTemplate>
+        </symbols:LineSymbol>
+    </UserControl.Resources>
+	
+    <Grid x:Name="LayoutRoot" Background="#333333">
+
+		<Grid.RowDefinitions>
+			<RowDefinition Height="100" x:Name="TopBarRowDefinition" />
+			<RowDefinition Height="30" />
+			<RowDefinition Height="*" />
+		</Grid.RowDefinitions>
+		
+		<!--Top bar-->
+		<Grid Grid.Row="0">
+			<Grid VerticalAlignment="Bottom" HorizontalAlignment="Left">
+				<TextBlock Text="Showcase" Style="{StaticResource titleTextStyle}" />
+                <TextBlock Text="Showcase" Style="{StaticResource titleTextStyle2}" />
+			</Grid>
+			<local:EsriLogo HorizontalAlignment="Right" Margin="0,-5,0,15" 
+							MouseLeftButtonDown="EsriLogo_MouseLeftButtonDown"
+							VerticalAlignment="Stretch" />
+			
+			<Image Source="/Images/SlLogo.png" HorizontalAlignment="Right" Margin="0,0,80,0"  />
+
+		</Grid>
+		
+		<!--Menu bar-->
+		<Grid Grid.Row="1" x:Name="TopMenuGrid" Background="Black">
+			
+			<Rectangle x:Name="BackgroundGradient" Opacity=".5" Fill="{StaticResource ReflectionGradient}"/>
+
+			<StackPanel HorizontalAlignment="Left" VerticalAlignment="Center" Orientation="Horizontal">
+				
+				<!-- Base layers -->
+				<local:DropDownMenu>
+					<local:DropDownMenu.MenuContent>
+						<Grid>
+							<Border Style="{StaticResource menuBorder}">
+								<StackPanel>
+									<RadioButton Content="Road" Style="{StaticResource radioButton}" 
+												 Tag="http://services.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer"
+												 local:CustomTooltip.ToolTip="This worldwide street map presents highway-level data for the world and street-level data for the United States, Canada, Japan, Southern Africa, and a number of countries in Europe and elsewhere. This comprehensive street map includes highways, major roads, minor roads, railways, water features, administrative boundaries, cities, parks, and landmarks, overlaid on shaded relief imagery for added context. The street map was developed by ESRI using AND road data and UNEP-WCMC parks and protected areas for the world and Tele Atlas Dynamap® and Multinet® street data for North America and Europe. Coverage for street-level data in Europe includes Andorra, Austria, Belgium, Czech Republic, Denmark, France, Germany, Great Britain, Greece, Hungary, Ireland, Italy, Luxembourg, Netherlands, Northern Ireland (Belfast only), Norway, Poland, Portugal, San Marino, Slovakia, Spain, Sweden, and Switzerland. Coverage for street-level data elsewhere in the world includes China (Hong Kong only), Indonesia (Jakarta only), Egypt (Cairo only), Japan, Mexico (Mexico City only), Russia (Moscow, St. Petersburg only), and Turkey (Istanbul, Ankara only)."
+												 GroupName="BaseLayer" Checked="BaseLayer_Changed" />
+									<RadioButton Content="Aerial" IsChecked="True" Style="{StaticResource radioButton}" 
+												 Tag="http://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer"
+												 local:CustomTooltip.ToolTip="This service presents satellite imagery for the world and high-resolution aerial imagery for the United States. The service includes NASA Blue Marble: Next Generation 500m resolution imagery at small scales (above 1:1,000,000) and i-cubed 15m eSAT imagery at medium-to-large scales (down to 1:70,000) for the world. The service also includes i-cubed Nationwide Select 1m resolution imagery for the contiguous United States for display at large scales (below 1:70,000). I-cubed Nationwide Select is a seamless, color mosaic of various government imagery sources, including USGS imagery for metropolitan areas and the best available USDA NAIP imagery and enhanced versions of USGS DOQQ imagery for other areas. Lastly, the service also includes imagery assembled by ESRI from various sources through the ArcGIS Online Content Sharing Program. Sources for this imagery include USGS and other organizations."
+												 Checked="BaseLayer_Changed" GroupName="BaseLayer" />
+									<RadioButton Content="Shaded Relief" Style="{StaticResource radioButton}" 
+												 Tag="http://services.arcgisonline.com/ArcGIS/rest/services/ESRI_ShadedRelief_World_2D/MapServer"
+												 local:CustomTooltip.ToolTip="This layer presents a worldwide shaded relief map at approximately 1km or 90m per pixel resolution for the world and 30m resolution for the United States. The shaded relief imagery was developed by ESRI using GTOPO30, SRTM, and NED elevation data from the USGS."
+												 Checked="BaseLayer_Changed" GroupName="BaseLayer" />
+									<RadioButton Content="Topographic" Style="{StaticResource radioButton}" 
+												 Tag="http://services.arcgisonline.com/ArcGIS/rest/services/NGS_Topo_US_2D/MapServer"
+												 Checked="BaseLayer_Changed" GroupName="BaseLayer"
+												 local:CustomTooltip.ToolTip="This service presents land cover imagery for the world and detailed topographic maps for the United States. The service includes NPS Natural Earth physical map at 1.24km per pixel for the world at small scales, i-cubed eTOPO 1:250,000-scale maps for the contiguous United States at medium scales, and National Geographic TOPO! 1:100,000 and 1:24,000-scale maps (1:250,000 and 1:63,000 in Alaska) for the United States at large scales. The TOPO! maps are seamless, scanned images of USGS paper topographic maps."/>
+									<RadioButton Content="Physical World" Style="{StaticResource radioButton}" 
+												 Tag="http://services.arcgisonline.com/ArcGIS/rest/services/NPS_Physical_World_2D/MapServer"
+												 local:CustomTooltip.ToolTip="This service presents the Natural Earth physical map at 1.24km per pixel for the world and 500m for the world."
+												 Checked="BaseLayer_Changed" GroupName="BaseLayer" />
+								</StackPanel>
+							</Border>
+						</Grid>
+					</local:DropDownMenu.MenuContent>
+					<Button Style="{StaticResource darkButtonStyle}" Margin="5,0,0,0" Cursor="Arrow" >
+						<Button.Content>
+							<StackPanel Orientation="Horizontal">
+                                <TextBlock Text="Base Map" Foreground="White" FontWeight="Bold" />
+								<Image Source="/Images/Layers-32.png" Height="22" Margin="2,-3,-3,-3" />
+							</StackPanel>
+						</Button.Content>
+					</Button>
+				</local:DropDownMenu>
+				
+	<!--
+				<local:DropDownMenu>
+					<local:DropDownMenu.MenuContent>
+						<Grid >
+							<Border Style="{StaticResource menuBorder}">
+								<StackPanel>
+
+									--><!--Ethnicity--><!--
+									<local:LayerCheckBox x:Name="layerDemo2" ConfiguratorParent="{Binding ElementName=LeftMenu}"
+														 Map="{Binding ElementName=Map}" Style="{StaticResource checkBox}" Content="Ethnicity by state" >
+										<local:LayerCheckBox.Layer>
+											<esri:FeatureLayer ID="Ethnicity"
+												Url="http://sampleserver1.arcgisonline.com/ArcGIS/rest/services/Demographics/ESRI_Census_USA/MapServer/5"
+												Opacity=".5">
+												<esri:FeatureLayer.FeatureSymbol>
+													<symbols:FillSymbol Fill="Transparent" BorderBrush="Black" BorderThickness="1" />
+												</esri:FeatureLayer.FeatureSymbol>
+												<esri:FeatureLayer.OutFields>
+													<sys:String>STATE_NAME</sys:String>
+													<sys:String>WHITE</sys:String>
+													<sys:String>BLACK</sys:String>
+													<sys:String>AMERI_ES</sys:String>
+													<sys:String>ASIAN</sys:String>
+													<sys:String>HAWN_PI</sys:String>
+													<sys:String>HISPANIC</sys:String>
+													<sys:String>OTHER</sys:String>
+													<sys:String>MULT_RACE</sys:String>
+												</esri:FeatureLayer.OutFields>
+												<esri:FeatureLayer.MapTip>
+													<Border Style="{StaticResource maptipBorder}" Background="#ee333333">
+														<pie:PieChartMapTip Name="pieChart" Margin="0" Background="White"
+                                                               ChartTitle="{Binding Converter={StaticResource MyDictionaryConverter}, 
+                                                                                    ConverterParameter=STATE_NAME, Mode=OneWay}" 
+                                                               LegendTitle="Legend" >
+															<pie:PieChartMapTip.PieElements>
+																<pie:PieElement FieldName="WHITE" DisplayName="White" />
+																<pie:PieElement FieldName="BLACK" DisplayName="Black" />
+																<pie:PieElement FieldName="AMERI_ES" DisplayName="American Indian" />
+																<pie:PieElement FieldName="ASIAN" DisplayName="Asian" />
+																<pie:PieElement FieldName="HAWN_PI" DisplayName="Asian" />
+																<pie:PieElement FieldName="HISPANIC" DisplayName="Hispanic" />
+																<pie:PieElement FieldName="OTHER" DisplayName="Other" />
+																<pie:PieElement FieldName="MULT_RACE" DisplayName="Multiple Races" />
+															</pie:PieChartMapTip.PieElements>
+															<pie:PieChartMapTip.StylePalette>
+																--><!--<visualizationToolkit:StylePalette>
+																	<Style TargetType="Control">
+																		<Setter Property="Background" Value="DarkRed" />
+																	</Style>
+																	<Style TargetType="Control">
+																		<Setter Property="Background" Value="DarkMagenta" />
+																	</Style>
+																	<Style TargetType="Control">
+																		<Setter Property="Background" Value="DarkOliveGreen" />
+																	</Style>
+																	<Style TargetType="Control">
+																		<Setter Property="Background" Value="DarkBlue"/>
+																	</Style>
+																	<Style TargetType="Control">
+																		<Setter Property="Background" Value="DarkSlateBlue" />
+																	</Style>
+																	<Style TargetType="Control">
+																		<Setter Property="Background" Value="DarkCyan"/>
+																	</Style>
+																	<Style TargetType="Control">
+																		<Setter Property="Background" Value="DarkOrange"/>
+																	</Style>
+																	<Style TargetType="Control">
+																		<Setter Property="Background" Value="DeepSkyBlue"/>
+																	</Style>
+																</visualizationToolkit:StylePalette>--><!--
+															</pie:PieChartMapTip.StylePalette>
+														</pie:PieChartMapTip>
+													</Border>
+												</esri:FeatureLayer.MapTip>
+											</esri:FeatureLayer>
+
+										</local:LayerCheckBox.Layer>
+									</local:LayerCheckBox>
+
+									--><!--US Population 2007--><!--
+									<local:LayerCheckBox x:Name="layerDemo3" Map="{Binding ElementName=Map}" 
+												ConfiguratorParent="{Binding ElementName=LeftMenu}"
+												Checked="layerChecked" Unchecked="layerUnchecked"
+												Style="{StaticResource checkBox}" Content="Thematic Rendering" >
+										<local:LayerCheckBox.Layer>
+											<esri:GraphicsLayer ID="Thematic Rendering" Opacity=".5">
+												<esri:GraphicsLayer.MapTip>
+													<Border Style="{StaticResource maptipBorder}">
+														<StackPanel Orientation="Vertical">
+															<StackPanel Orientation="Horizontal" Margin="0,0,0,6">
+																<TextBlock Text="State: " FontWeight="Bold" Foreground="#FFFFFFFF" />
+																<TextBlock Text="{Binding Converter={StaticResource MyDictionaryConverter}, 
+																	ConverterParameter=STATE_NAME, Mode=OneWay}" Foreground="White" />
+															</StackPanel>
+															<StackPanel Orientation="Horizontal">
+																<TextBlock Text="Population: " FontWeight="Bold" Foreground="#FFFFFFFF" />
+																<TextBlock Text="{Binding Converter={StaticResource MyDictionaryConverter}, 
+																	ConverterParameter=POP2007, Mode=OneWay}" Foreground="White" />
+															</StackPanel>
+														</StackPanel>
+													</Border>
+												</esri:GraphicsLayer.MapTip>
+											</esri:GraphicsLayer>
+										</local:LayerCheckBox.Layer>
+										<local:LayerCheckBox.Configurator>
+											<local:ConfiguratorContainer >
+												<local:ThematicLayerControl x:Name="thematicLayerControl" />
+											</local:ConfiguratorContainer>
+										</local:LayerCheckBox.Configurator>
+									</local:LayerCheckBox>
+
+									--><!--Illinois Households--><!--
+									<local:LayerCheckBox x:Name="layerDemo4" ConfiguratorParent="{Binding ElementName=LeftMenu}"
+														 Map="{Binding ElementName=Map}" Style="{StaticResource checkBox}" Content="Households Illinois" >
+										<local:LayerCheckBox.Layer>
+											<esri:FeatureLayer ID="Illinois Households" Opacity="0.5"
+                    Url="http://sampleserver1.arcgisonline.com/ArcGIS/rest/services/Demographics/ESRI_Census_USA/MapServer/3"
+                    Where="STATE_NAME='Illinois'">
+												<esri:FeatureLayer.OutFields>
+													<sys:String>NAME</sys:String>
+													<sys:String>HOUSEHOLDS</sys:String>
+												</esri:FeatureLayer.OutFields>
+												<esri:FeatureLayer.Renderer>
+													<esri:ClassBreaksRenderer Attribute="HOUSEHOLDS">
+														<esri:ClassBreaksRenderer.Classes>
+															<esri:ClassBreakInfo MinimumValue="0" MaximumValue="10000">
+																<esri:ClassBreakInfo.Symbol>
+																	<symbols:SimpleFillSymbol Fill="#FFDCDC" BorderBrush="Transparent" BorderThickness="2" />
+																</esri:ClassBreakInfo.Symbol>
+															</esri:ClassBreakInfo>
+															<esri:ClassBreakInfo MinimumValue="10000" MaximumValue="25000">
+																<esri:ClassBreakInfo.Symbol>
+																	<symbols:SimpleFillSymbol Fill="#FFB4B4" BorderBrush="Transparent" BorderThickness="2" />
+																</esri:ClassBreakInfo.Symbol>
+															</esri:ClassBreakInfo>
+															<esri:ClassBreakInfo MinimumValue="25000" MaximumValue="50000">
+																<esri:ClassBreakInfo.Symbol>
+																	<symbols:SimpleFillSymbol Fill="#FF8282" BorderBrush="Transparent" BorderThickness="2" />
+																</esri:ClassBreakInfo.Symbol>
+															</esri:ClassBreakInfo>
+															<esri:ClassBreakInfo MinimumValue="50000" MaximumValue="75000">
+																<esri:ClassBreakInfo.Symbol>
+																	<symbols:SimpleFillSymbol Fill="#FF6464" BorderBrush="Transparent" BorderThickness="2" />
+																</esri:ClassBreakInfo.Symbol>
+															</esri:ClassBreakInfo>
+															<esri:ClassBreakInfo MinimumValue="75000" MaximumValue="100000">
+																<esri:ClassBreakInfo.Symbol>
+																	<symbols:SimpleFillSymbol Fill="#FF2424" BorderBrush="Transparent" BorderThickness="2" />
+																</esri:ClassBreakInfo.Symbol>
+															</esri:ClassBreakInfo>
+															<esri:ClassBreakInfo MinimumValue="100000" MaximumValue="500000">
+																<esri:ClassBreakInfo.Symbol>
+																	<symbols:SimpleFillSymbol Fill="#AA0000" BorderBrush="Transparent" BorderThickness="2" />
+																</esri:ClassBreakInfo.Symbol>
+															</esri:ClassBreakInfo>
+															<esri:ClassBreakInfo MinimumValue="500000" MaximumValue="1000000">
+																<esri:ClassBreakInfo.Symbol>
+																	<symbols:SimpleFillSymbol Fill="#800000" BorderBrush="Transparent" BorderThickness="2" />
+																</esri:ClassBreakInfo.Symbol>
+															</esri:ClassBreakInfo>
+															<esri:ClassBreakInfo MinimumValue="1000000" MaximumValue="10000000">
+																<esri:ClassBreakInfo.Symbol>
+																	<symbols:SimpleFillSymbol Fill="#400000" BorderBrush="Transparent" BorderThickness="2" />
+																</esri:ClassBreakInfo.Symbol>
+															</esri:ClassBreakInfo>
+														</esri:ClassBreaksRenderer.Classes>
+													</esri:ClassBreaksRenderer>
+												</esri:FeatureLayer.Renderer>
+												<esri:FeatureLayer.MapTip>
+													<Border Style="{StaticResource menuBorder}">
+														<StackPanel Orientation="Vertical">
+															<StackPanel Orientation="Horizontal" Margin="0,0,0,6">
+																<TextBlock Text="County: " FontWeight="Bold" Foreground="#FFFFFFFF" />
+																<TextBlock Text="{Binding Converter={StaticResource MyDictionaryConverter}, 
+																	ConverterParameter=NAME, Mode=OneWay}" Foreground="White" />
+															</StackPanel>
+															<StackPanel Orientation="Horizontal">
+																<TextBlock Text="Households: " FontWeight="Bold" Foreground="#FFFFFFFF" />
+																<TextBlock Text="{Binding Converter={StaticResource MyDictionaryConverter}, 
+																	ConverterParameter=HOUSEHOLDS, Mode=OneWay}" Foreground="White" />
+															</StackPanel>
+														</StackPanel>
+													</Border>
+												</esri:FeatureLayer.MapTip>
+											</esri:FeatureLayer>
+										</local:LayerCheckBox.Layer>
+									</local:LayerCheckBox>
+
+									--><!--Pie chart marker symbol--><!--
+                                    <local:LayerCheckBox x:Name="layerDemo6" ConfiguratorParent="{Binding ElementName=LeftMenu}"
+														 Map="{Binding ElementName=Map}" Style="{StaticResource checkBox}" Content="Pie chart marker" >
+                                        <local:LayerCheckBox.Layer>
+											<esri:GraphicsLayer ID="Pie Marker Symbol" MouseEnter="pieCharts_MouseEnter" MouseLeave="pieCharts_MouseLeave" />
+										</local:LayerCheckBox.Layer>
+									</local:LayerCheckBox>
+									
+									--><!--SuperTuesday --><!--
+									<local:LayerCheckBox x:Name="layerDemo5" ConfiguratorParent="{Binding ElementName=LeftMenu}"
+														 Map="{Binding ElementName=Map}" Style="{StaticResource checkBox}" Content="Super Tuesday - New York" >
+										<local:LayerCheckBox.Layer>
+											<esri:FeatureLayer ID="Super Tuesday" Opacity=".5"
+                    Url="http://sampleserver1.arcgisonline.com/ArcGIS/rest/services/Specialty/SuperTuesdaySample/MapServer/0"
+                    Where="STATE_NAME='New York'"
+                    >
+												<esri:FeatureLayer.OutFields>
+													<sys:String>NAME</sys:String>
+													<sys:String>ClintonP</sys:String>
+													<sys:String>ObamaP</sys:String>
+												</esri:FeatureLayer.OutFields>
+												<esri:FeatureLayer.Renderer>
+													<esri:ClassBreaksRenderer Attribute="ObamaP">
+														<esri:ClassBreaksRenderer.Classes>
+															<esri:ClassBreakInfo MinimumValue="0" MaximumValue="5">
+																<esri:ClassBreakInfo.Symbol>
+																	<symbols:SimpleFillSymbol Fill="#FFC184" BorderBrush="Transparent" BorderThickness="2" />
+																</esri:ClassBreakInfo.Symbol>
+															</esri:ClassBreakInfo>
+															<esri:ClassBreakInfo MinimumValue="5" MaximumValue="15">
+																<esri:ClassBreakInfo.Symbol>
+																	<symbols:SimpleFillSymbol Fill="#FFA851" BorderBrush="Transparent" BorderThickness="2" />
+																</esri:ClassBreakInfo.Symbol>
+															</esri:ClassBreakInfo>
+															<esri:ClassBreakInfo MinimumValue="15" MaximumValue="20">
+																<esri:ClassBreakInfo.Symbol>
+																	<symbols:SimpleFillSymbol Fill="#FF8C1A" BorderBrush="Transparent" BorderThickness="2" />
+																</esri:ClassBreakInfo.Symbol>
+															</esri:ClassBreakInfo>
+															<esri:ClassBreakInfo MinimumValue="20" MaximumValue="25">
+																<esri:ClassBreakInfo.Symbol>
+																	<symbols:SimpleFillSymbol Fill="#FFF080" BorderBrush="Transparent" BorderThickness="2" />
+																</esri:ClassBreakInfo.Symbol>
+															</esri:ClassBreakInfo>
+															<esri:ClassBreakInfo MinimumValue="25" MaximumValue="30">
+																<esri:ClassBreakInfo.Symbol>
+																	<symbols:SimpleFillSymbol Fill="#D56A00" BorderBrush="Transparent" BorderThickness="2" />
+																</esri:ClassBreakInfo.Symbol>
+															</esri:ClassBreakInfo>
+															<esri:ClassBreakInfo MinimumValue="30" MaximumValue="35">
+																<esri:ClassBreakInfo.Symbol>
+																	<symbols:SimpleFillSymbol Fill="#AE5700" BorderBrush="Transparent" BorderThickness="2" />
+																</esri:ClassBreakInfo.Symbol>
+															</esri:ClassBreakInfo>
+															<esri:ClassBreakInfo MinimumValue="35" MaximumValue="40">
+																<esri:ClassBreakInfo.Symbol>
+																	<symbols:SimpleFillSymbol Fill="#6F3700" BorderBrush="Transparent" BorderThickness="2" />
+																</esri:ClassBreakInfo.Symbol>
+															</esri:ClassBreakInfo>
+															<esri:ClassBreakInfo MinimumValue="40" MaximumValue="100">
+																<esri:ClassBreakInfo.Symbol>
+																	<symbols:SimpleFillSymbol Fill="#482400" BorderBrush="Transparent" BorderThickness="2" />
+																</esri:ClassBreakInfo.Symbol>
+															</esri:ClassBreakInfo>
+														</esri:ClassBreaksRenderer.Classes>
+													</esri:ClassBreaksRenderer>
+												</esri:FeatureLayer.Renderer>
+												<esri:FeatureLayer.MapTip>
+													<Border Style="{StaticResource maptipBorder}">
+														<StackPanel Orientation="Vertical">
+															<StackPanel Orientation="Horizontal" Margin="0,0,0,6">
+																<TextBlock Text="County: " FontWeight="Bold" Foreground="#FFFFFFFF" />
+																<TextBlock Text="{Binding Converter={StaticResource MyDictionaryConverter}, 
+																	ConverterParameter=NAME, Mode=OneWay}" Foreground="White" />
+															</StackPanel>
+															<StackPanel Orientation="Horizontal">
+																<TextBlock Text="Clinton: " FontWeight="Bold" Foreground="#FFFFFFFF" />
+																<TextBlock Text="{Binding Converter={StaticResource MyDictionaryConverter}, 
+																	ConverterParameter=ClintonP, Mode=OneWay}" Foreground="White" />
+																<TextBlock Text="%" Foreground="#FFFFFFFF" />
+															</StackPanel>
+															<StackPanel Orientation="Horizontal">
+																<TextBlock Text="Obama: " FontWeight="Bold" Foreground="#FFFFFFFF" />
+																<TextBlock Text="{Binding Converter={StaticResource MyDictionaryConverter}, 
+																	ConverterParameter=ObamaP, Mode=OneWay}" Foreground="White" />
+																<TextBlock Text="%" Foreground="#FFFFFFFF" />
+															</StackPanel>
+														</StackPanel>
+													</Border>
+												</esri:FeatureLayer.MapTip>
+											</esri:FeatureLayer>
+										</local:LayerCheckBox.Layer>
+									</local:LayerCheckBox>
+									
+									--><!--Earthquake heatmap--><!--
+									<local:LayerCheckBox x:Name="layerDemo1" ConfiguratorParent="{Binding ElementName=LeftMenu}"
+														 Map="{Binding ElementName=Map}" 
+														Checked="layerChecked" Unchecked="layerUnchecked"
+														Style="{StaticResource checkBox}" Content="Earthquakes (Heatmap)" >
+										<local:LayerCheckBox.Layer>
+											<local:HeatMapLayer ID="Heat map - Earthquakes" 
+													Opacity=".5" Intensity="30" />
+										</local:LayerCheckBox.Layer>
+										<local:LayerCheckBox.Configurator>
+											<local:ConfiguratorContainer >
+												<StackPanel>
+													<TextBlock Text="Intensity" Foreground="White" />
+													<Slider Value="{Binding Path=Layer.Intensity, ElementName=layerDemo1, Mode=TwoWay}" Minimum="5" Maximum="50" 
+														Margin="5" x:Name="earthQuakeIntensitySlider"
+															
+														Background="Transparent"
+														HorizontalAlignment="Stretch" Height="18" />
+												</StackPanel>
+											</local:ConfiguratorContainer>
+										</local:LayerCheckBox.Configurator>
+									</local:LayerCheckBox>
+									
+								</StackPanel>
+							</Border>
+						</Grid>
+					</local:DropDownMenu.MenuContent>
+					<Button Style="{StaticResource darkButtonStyle}" Margin="5,0,0,0" Cursor="Arrow" >
+						<Button.Content>
+							<StackPanel Orientation="Horizontal">
+                                <TextBlock Text="Demographics" Foreground="White" FontWeight="Bold" />
+								<Image Source="/Images/Pie-chart-32.png" Height="20" Margin="5,-2,0,-2" />
+							</StackPanel>
+						</Button.Content>
+					</Button>
+				</local:DropDownMenu>
+				
+				--><!-- Media -->
+                <MediaElement x:Name="shakeOutMedia"
+					AutoPlay="False" Width="0" Height="0"
+					Source="http://serverapps.esri.com/media/scec-shakeout-simulation-rt.wmv"
+					IsMuted="True" Stretch="Fill" />
+				
+				<MediaElement x:Name="IkeVideo" Width="0" Height="0"
+					Source="http://serverapps.esri.com/media/Hurricane_Ike.wmv" 
+					AutoPlay="False" IsMuted="True" />
+
+				<local:DropDownMenu>
+					<local:DropDownMenu.MenuContent>
+						<Grid >
+							<Border Style="{StaticResource menuBorder}">
+								<StackPanel>
+
+									<local:LayerCheckBox x:Name="layerMedia1" ConfiguratorParent="{Binding ElementName=LeftMenu}"
+														 Map="{Binding ElementName=Map}" 
+												Checked="layerChecked" Unchecked="layerUnchecked"
+												Style="{StaticResource checkBox}" Content="ShakeOut 2008" >
+										<local:LayerCheckBox.Resources>
+											
+										</local:LayerCheckBox.Resources>
+											<local:LayerCheckBox.Layer>
+											<esri:ElementLayer ID="ShakeOut 2008" >
+												<esri:ElementLayer.Children>
+													<Rectangle 
+														esri:ElementLayer.Envelope="-120.309183241879,32.3360853442552,-114.543827787924,35.579097787105">
+														<Rectangle.Fill>
+															<VideoBrush  SourceName="shakeOutMedia" x:Name="shakeOutBrush2" />
+														</Rectangle.Fill>
+														<Rectangle.RenderTransform>
+															<RotateTransform Angle="-1.1412502857301" />
+														</Rectangle.RenderTransform>
+													</Rectangle>
+												</esri:ElementLayer.Children>
+											</esri:ElementLayer>
+										</local:LayerCheckBox.Layer>
+										<local:LayerCheckBox.Configurator>
+											<local:ConfiguratorContainer >
+												<local:VideoController Media="{Binding ElementName=shakeOutMedia}" x:Name="shakeOutController" />
+											</local:ConfiguratorContainer>
+										</local:LayerCheckBox.Configurator>
+									</local:LayerCheckBox>
+
+									<local:LayerCheckBox x:Name="layerMedia2" ConfiguratorParent="{Binding ElementName=LeftMenu}"
+														 Map="{Binding ElementName=Map}" 
+												Checked="layerChecked" Unchecked="layerUnchecked"
+												Style="{StaticResource checkBox}" Content="Hurricane Ike" >
+										<local:LayerCheckBox.Layer>
+											<esri:ElementLayer ID="Hurrikane Ike" Opacity=".5" >
+												<esri:ElementLayer.Children>
+													 <!--MediaElement source can define relative path from the perspective of the xap file-->
+													<Rectangle 
+														esri:ElementLayer.Envelope="-110.54568606816,20.6202883800494,-60.0794432229144,58.4699705139836">
+														<Rectangle.Fill>
+															<VideoBrush SourceName="IkeVideo" />
+														</Rectangle.Fill>
+														<Rectangle.RenderTransform>
+															<RotateTransform Angle="4.32779046937072" />
+														</Rectangle.RenderTransform>
+													</Rectangle>
+												</esri:ElementLayer.Children>
+											</esri:ElementLayer>
+										</local:LayerCheckBox.Layer>
+										<local:LayerCheckBox.Configurator>
+											<local:ConfiguratorContainer >
+												<local:VideoController Media="{Binding ElementName=IkeVideo}" x:Name="hurricaneIkeController" />
+											</local:ConfiguratorContainer>
+										</local:LayerCheckBox.Configurator>
+									</local:LayerCheckBox>
+								</StackPanel>
+							</Border>
+						</Grid>
+					</local:DropDownMenu.MenuContent>
+						<Button Style="{StaticResource darkButtonStyle}" Margin="5,0,0,0" Cursor="Arrow" >
+							<Button.Content>
+								<StackPanel Orientation="Horizontal">
+                                <TextBlock Text="Media" Foreground="White" FontWeight="Bold" />
+									<Image Source="/Images/Video-32.png" Height="20" Margin="5,-2,0,-4" />
+								</StackPanel>
+							</Button.Content>
+						</Button>
+				</local:DropDownMenu>
+
+                <local:DropDownMenu>
+                    <local:DropDownMenu.MenuContent>
+                        <Grid Width="200">
+                            <Border Style="{StaticResource menuBorder}">
+                                <StackPanel>
+                                    <StackPanel.Resources>
+                                        <local:WMSMapServiceLayer x:Name="globeLayer" ID="Globe" 
+												Url="http://viz.globe.gov/viz-bin/wmt.cgi"
+												ProxyUrl="~../ProxyHandler.ashx" Layers="SWTMP"
+												Initialized="globeLayer_Initialized"
+												SkipGetCapabilities="False"
+												Version="1.1.1" Opacity="0.7" />
+                                    </StackPanel.Resources>
+                                    <local:LayerCheckBox x:Name="layerWeather1" ConfiguratorParent="{Binding ElementName=LeftMenu}"
+														 Map="{Binding ElementName=Map}" Style="{StaticResource checkBox}" Content="Mesonet Radar (WMS)" >
+                                        <local:LayerCheckBox.Layer>
+                                            <local:WMSMapServiceLayer ID="Mesonet Radar" 
+												Url="http://mesonet.agron.iastate.edu/cgi-bin/wms/nexrad/n0r.cgi"
+												ProxyUrl="~../ProxyHandler.ashx"
+												SkipGetCapabilities="False"
+												Layers="nexrad-n0r" Version="1.1.1" Opacity="0.7" />
+
+                                        </local:LayerCheckBox.Layer>
+                                    </local:LayerCheckBox>
+
+                                    <local:LayerCheckBox x:Name="layerWeather2" ConfiguratorParent="{Binding ElementName=LeftMenu}"
+														 Map="{Binding ElementName=Map}" 
+												Checked="layerChecked" Unchecked="layerUnchecked"
+												Layer="{StaticResource globeLayer}"
+												Style="{StaticResource checkBox}" Content="Globe.gov (WMS)" >
+
+                                        <local:LayerCheckBox.Configurator>
+                                            <local:ConfiguratorContainer Visibility="Collapsed">
+                                                <StackPanel>
+                                                    <ComboBox x:Name="wmsLayerList"
+														Style="{StaticResource comboBox}" 
+														SelectionChanged="wmsLayerList_SelectionChanged"
+														ItemsSource="{Binding Source={StaticResource globeLayer}, Path=LayerList}">
+                                                        <ComboBox.ItemTemplate>
+                                                            <DataTemplate>
+                                                                <TextBlock Text="{Binding Title}" Foreground="White"
+																	ToolTipService.ToolTip="{Binding Abstract}" />
+                                                            </DataTemplate>
+                                                        </ComboBox.ItemTemplate>
+                                                    </ComboBox>
+                                                </StackPanel>
+                                            </local:ConfiguratorContainer>
+                                        </local:LayerCheckBox.Configurator>
+                                    </local:LayerCheckBox>
+                                </StackPanel>
+                            </Border>
+                        </Grid>
+                    </local:DropDownMenu.MenuContent>
+                    <Button Style="{StaticResource darkButtonStyle}" Margin="5,0,0,0" Cursor="Arrow" >
+                        <Button.Content>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="Weather" Foreground="White" FontWeight="Bold" />
+                                <Image Source="/Images/weather.png" Height="16" Margin="5,0,0,0" />
+                            </StackPanel>
+                        </Button.Content>
+                    </Button>
+                </local:DropDownMenu>
+            </StackPanel>
+			
+			<!--TOp Menu bar - Right side-->		
+
+			<StackPanel HorizontalAlignment="Right" VerticalAlignment="Center" Orientation="Horizontal">
+				
+				<Button Style="{StaticResource darkButtonStyle}">
+					<Button.Content>
+						<Image Source="/Images/Tools_32x32.png" Height="16" 
+							   ToolTipService.ToolTip="Toggle Tools Window"/>
+					</Button.Content>
+					<i:Interaction.Triggers>
+						<i:EventTrigger EventName="Click" >
+							<local:ToggleWindowVisibilityAction TargetName="toolsWindow" />
+						</i:EventTrigger>
+					</i:Interaction.Triggers>
+				</Button>
+				
+				<Button Style="{StaticResource darkButtonStyle}" Margin="3,0,0,0" >
+					<Button.Content>
+						<Image Source="/Images/Fullscreen-32.png" Height="24" Margin="-4"
+							   ToolTipService.ToolTip="Toggle Fullscreen"/>
+					</Button.Content>
+					<i:Interaction.Triggers>
+						<i:EventTrigger EventName="Click" >
+							<local:ToggleFullScreenAction />
+						</i:EventTrigger>
+					</i:Interaction.Triggers>
+				</Button>
+				
+				<local:LocatorControl Map="{Binding ElementName=Map}" Height="22" x:Name="locator" Margin="5,0,2,0" />
+				
+			</StackPanel>
+			
+		</Grid>
+		
+		<Grid Grid.Row="2">
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition Width="0" x:Name="RightColumnDefinition" />
+				<ColumnDefinition Width="0" x:Name="RightColumnSplitterDefinition" />
+				<ColumnDefinition Width="*" />
+			</Grid.ColumnDefinitions>
+			
+			<ScrollViewer VerticalScrollBarVisibility="Auto">
+				<StackPanel Grid.Column="0" x:Name="LeftMenu"/>
+			</ScrollViewer>
+			<controls:GridSplitter x:Name="grsplSplitter" Grid.Column="1" VerticalAlignment="Stretch"
+						Background="Black"  Style="{StaticResource GridSplitterStyleBlack}"
+						HorizontalAlignment="Center" Width="9" />
+
+			<!-- Map area -->
+			<Grid x:Name="MainGrid" Grid.Column="2">
+
+				<esri:Map x:Name="Map" Extent="-130,30,-70,50"
+						  >
+
+					<esri:ArcGISTiledMapServiceLayer ID="Base layer" 
+							Url="http://services.arcgisonline.com/ArcGIS/rest/services/ESRI_Imagery_World_2D/MapServer"/>
+
+					<esri:GraphicsLayer ID="Annotations" MouseLeftButtonDown="annotations_MouseLeftButtonDown" >
+						<esri:GraphicsLayer.Renderer>
+							<local:SimpleRenderer />
+						</esri:GraphicsLayer.Renderer>
+					</esri:GraphicsLayer>
+
+					<i:Interaction.Behaviors>
+						<local:WheelZoom /> <!-- This behavior enables mousewheel in fullscreen and out-of-browser using the new SL3 mousewheel event -->
+					</i:Interaction.Behaviors>
+
+				</esri:Map>
+
+				<local:MapProgress Map="{Binding ElementName=Map}"
+								   HorizontalAlignment="Center"
+								   VerticalAlignment="Bottom"
+								   Width="150" Height="12" Margin="2"
+								   IsHitTestVisible="False" />
+
+				<Grid x:Name="InitializeLayer" Visibility="Collapsed" Opacity=".75"
+					  HorizontalAlignment="Center" VerticalAlignment="Center" Background="#66000000" >
+					<TextBlock Text="Loading Layer..." Foreground="White" IsHitTestVisible="False" Margin="3"  />
+				</Grid>
+
+				<local:ScaleBar x:Name="scaleBar" Opacity=".5"
+					Map="{Binding ElementName=Map}" 
+					MapUnit="DecimalDegrees" Width="200" Fill="White"
+					Margin="5,0,10,0" IsHitTestVisible="False"
+					HorizontalAlignment="Left" VerticalAlignment="Bottom" />
+
+				<toolkit:Navigation x:Name="nav" 
+						Margin="10" Map="{Binding ElementName=Map}" 
+						HorizontalAlignment="Left" VerticalAlignment="Top" 
+						Style="{StaticResource NavigationStyle}" >
+					<toolkit:Navigation.Effect>
+						<DropShadowEffect Color="Black" Direction="-45" BlurRadius="20" Opacity=".75" />
+					</toolkit:Navigation.Effect>
+				</toolkit:Navigation>
+
+				<Canvas HorizontalAlignment="Left" VerticalAlignment="Top"		>
+					<toolkit:MagnifyingGlass x:Name="mag" Map="{Binding ElementName=Map}" Visibility="Collapsed" Canvas.Left="200" Canvas.Top="200" >
+						<toolkit:MagnifyingGlass.Layer>
+							<esri:ArcGISTiledMapServiceLayer ID="Base layer" 
+								Url="http://services.arcgisonline.com/ArcGIS/rest/services/ESRI_Imagery_World_2D/MapServer"/>						
+						</toolkit:MagnifyingGlass.Layer>
+					</toolkit:MagnifyingGlass>
+				</Canvas>
+				
+			</Grid>
+			
+		</Grid>
+		
+		<!-- Windows -->
+		
+		<!--Toolbar window-->
+		<local:DraggableWindow IsOpen="False" x:Name="toolsWindow"
+							Grid.Row="2" Margin="3"
+							VerticalAlignment="Top"
+							HorizontalAlignment="Center"
+							Title="Map Tools">
+				<StackPanel>
+				<!--First row-->
+				<StackPanel Orientation="Horizontal">
+
+					<ToggleButton HorizontalAlignment="Right" VerticalAlignment="Center" 
+							  Height="30" Width="30" Margin="0,0,2,0"
+							  local:Utilities.ToggleGroup="tools"
+							  Checked="toggleDraw_Checked"
+							  Unchecked="toggleDraw_Unchecked"
+							  x:Name="toggleDrawPoint"
+							  ToolTipService.ToolTip="Draw point"
+							  Style="{StaticResource darkToggleButtonStyle}">
+						<ToggleButton.Content>
+							<Image Source="/Images/DrawPoint.png" />
+						</ToggleButton.Content>
+					</ToggleButton>
+
+					<ToggleButton HorizontalAlignment="Right" VerticalAlignment="Center" 
+							  Height="30" Width="30" Margin="0,0,2,0"
+							  local:Utilities.ToggleGroup="tools"
+							  Checked="toggleDraw_Checked"
+							  Unchecked="toggleDraw_Unchecked"
+							  x:Name="toggleDrawPolyline"
+							  ToolTipService.ToolTip="Draw polyline"
+							  Style="{StaticResource darkToggleButtonStyle}">
+						<ToggleButton.Content>
+							<Image Source="/Images/DrawPolyline.png" />
+						</ToggleButton.Content>
+					</ToggleButton>
+
+					<ToggleButton HorizontalAlignment="Right" VerticalAlignment="Center" 
+							  Height="30" Width="30" Margin="0,0,2,0"
+							  local:Utilities.ToggleGroup="tools"
+							  Checked="toggleDraw_Checked"
+							  Unchecked="toggleDraw_Unchecked"
+							  x:Name="toggleDrawPolygon"
+							  ToolTipService.ToolTip="Draw polygon"
+							  Style="{StaticResource darkToggleButtonStyle}">
+						<ToggleButton.Content>
+							<Image Source="/Images/DrawPolygon.png" />
+						</ToggleButton.Content>
+					</ToggleButton>
+
+					<ToggleButton HorizontalAlignment="Right" VerticalAlignment="Center" 
+							  Height="30" Width="30" Margin="0,0,2,0"
+							  local:Utilities.ToggleGroup="tools"
+							  Checked="toggleDraw_Checked"
+							  Unchecked="toggleDraw_Unchecked"
+							  x:Name="toggleDrawRectangle"
+							 ToolTipService.ToolTip="Draw rectangle"
+							   Style="{StaticResource darkToggleButtonStyle}">
+						<ToggleButton.Content>
+							<Image Source="/Images/DrawRectangle.png" />
+						</ToggleButton.Content>
+					</ToggleButton>
+					
+					<ToggleButton HorizontalAlignment="Right" VerticalAlignment="Center" 
+							  Height="30" Width="30" Margin="0,0,2,0"
+							  local:Utilities.ToggleGroup="tools"
+							  Checked="toggleDraw_Checked"
+							  Unchecked="toggleDraw_Unchecked"
+							  x:Name="toggleDrawFreehand"
+							 ToolTipService.ToolTip="Draw Freehand"
+							   Style="{StaticResource darkToggleButtonStyle}">
+						<ToggleButton.Content>
+							<Image Source="/Images/DrawFreehand.png" />
+						</ToggleButton.Content>
+					</ToggleButton>
+					
+					<ToggleButton HorizontalAlignment="Right" VerticalAlignment="Center" 
+							  Height="30" Width="30" Margin="0,0,2,0"
+							  local:Utilities.ToggleGroup="tools"
+							  Checked="toggleEditGeometry_Checked"
+							  Unchecked="toggleEditGeometry_Checked"
+							  x:Name="toggleEditGeometry"
+							  ToolTipService.ToolTip="Edit annotation"
+							  Style="{StaticResource darkToggleButtonStyle}">
+						<ToggleButton.Content>
+							<Image Source="/Images/EditGeometry.png" Width="16" Height="16" />
+						</ToggleButton.Content>
+					</ToggleButton>
+
+					<ToggleButton HorizontalAlignment="Right" VerticalAlignment="Center" 
+							  Height="30" Width="30" Margin="0,0,2,0"
+							  local:Utilities.ToggleGroup="tools"
+							  x:Name="toggleDeleteGraphics"
+							  ToolTipService.ToolTip="Delete annotation"
+							  Style="{StaticResource darkToggleButtonStyle}">
+						<ToggleButton.Content>
+							<Image Source="/Images/DeleteGraphics.png" />
+						</ToggleButton.Content>
+					</ToggleButton>
+					
+				</StackPanel>
+					
+				<!--Second row-->
+				<StackPanel Orientation="Horizontal">
+					
+					<ToggleButton HorizontalAlignment="Right" VerticalAlignment="Center" 
+							  Height="30" Width="30" Margin="0,0,2,0"
+							  Unchecked="GeoMeasureToggleButton_Checked" 
+							  Checked="GeoMeasureToggleButton_Checked"
+							  local:Utilities.ToggleGroup="tools"
+							  ToolTipService.ToolTip="Measure radius"
+							  Style="{StaticResource darkToggleButtonStyle}">
+						<ToggleButton.Content>
+							<Image Source="/Images/radius.png" />
+						</ToggleButton.Content>
+					</ToggleButton>
+
+					<ToggleButton HorizontalAlignment="Right" VerticalAlignment="Center" 
+							  Height="30" Width="30" Margin="0,0,2,0"
+							  local:Utilities.ToggleGroup="tools" x:Name="MeasureDistance"
+							  ToolTipService.ToolTip="Measure distance" Checked="Measure_Checked" Unchecked="Measure_Unchecked"
+							  Style="{StaticResource darkToggleButtonStyle}">
+						<ToggleButton.Content>
+							<Image Source="/Images/MeasureDistance.png" />
+						</ToggleButton.Content>
+					</ToggleButton>
+					
+					<ToggleButton HorizontalAlignment="Right" VerticalAlignment="Center" 
+							  Height="30" Width="30" Margin="0,0,2,0"
+							  local:Utilities.ToggleGroup="tools" x:Name="MeasureArea"
+							  ToolTipService.ToolTip="Measure area" Checked="Measure_Checked" Unchecked="Measure_Unchecked"
+							  Style="{StaticResource darkToggleButtonStyle}">
+						<ToggleButton.Content>
+							<Image Source="/Images/MeasureArea.png" />
+						</ToggleButton.Content>
+					</ToggleButton>
+
+                    <Button Style="{StaticResource darkButtonStyle}"
+							Height="30" Width="30" Margin="0,0,2,0"
+							HorizontalContentAlignment="Left"
+							Padding="2"
+							ToolTipService.ToolTip="Toggle Overview Map" >
+						<Button.Content>
+							<Image Source="/Images/Maps-blue-32.png" />
+						</Button.Content>
+						<i:Interaction.Triggers>
+							<i:EventTrigger EventName="Click" >
+								<local:ToggleWindowVisibilityAction TargetName="OverviewWindow" />
+							</i:EventTrigger>
+						</i:Interaction.Triggers>
+					</Button>
+					
+					<Button Style="{StaticResource darkButtonStyle}"
+							Height="30" Width="30" Margin="0,0,2,0"
+							Padding="2"
+							HorizontalContentAlignment="Left"
+							ToolTipService.ToolTip="Toggle Layers Window" >
+						<Button.Content>
+							<Image Source="/Images/Layers-32.png" />
+						</Button.Content>
+						<i:Interaction.Triggers>
+							<i:EventTrigger EventName="Click" >
+								<local:ToggleWindowVisibilityAction TargetName="layersWindow" />
+							</i:EventTrigger>
+						</i:Interaction.Triggers>
+					</Button>
+					
+					<Button Style="{StaticResource darkButtonStyle}"
+							HorizontalContentAlignment="Left"
+							Height="30" Width="30" Margin="0,0,2,0"
+							Padding="3"
+							ToolTipService.ToolTip="Toggle Bookmarks Window" >
+						<Button.Content>
+							<Image Source="/Images/bookmark_add-32.png" />
+						</Button.Content>
+						<i:Interaction.Triggers>
+							<i:EventTrigger EventName="Click" >
+								<local:ToggleWindowVisibilityAction TargetName="BookmarksWindow" />
+							</i:EventTrigger>
+						</i:Interaction.Triggers>
+					</Button>
+					
+					<Button Style="{StaticResource darkButtonStyle}"
+							Height="30" Width="30" Margin="0,0,2,0"
+							HorizontalContentAlignment="Left"
+							Padding="3"
+							ToolTipService.ToolTip="Toggle Magnifying Glass" >
+						<Button.Content>
+							<Image Source="/Images/Search-32.png" />
+						</Button.Content>
+						<i:Interaction.Triggers>
+							<i:EventTrigger EventName="Click" >
+								<local:ToggleVisibilityAction TargetName="mag" />
+							</i:EventTrigger>
+						</i:Interaction.Triggers>
+					</Button>
+				</StackPanel>
+			</StackPanel>
+		</local:DraggableWindow>
+
+		<!--Layers window-->
+        <local:DraggableWindow IsOpen="False" x:Name="layersWindow"
+							Grid.Row="2"
+							Margin="20"
+							VerticalAlignment="Top"
+							HorizontalAlignment="Right"
+							Title="Layer controls">
+            <local:LayerList x:Name="LayerControlList" Map="{Binding ElementName=Map}" />
+		</local:DraggableWindow>
+		
+		<!--Overviewmap window-->
+		<local:DraggableWindow IsOpen="False" x:Name="OverviewWindow"
+							Grid.Row="2"
+							Margin="20,100"
+							VerticalAlignment="Top"
+							HorizontalAlignment="Right"
+							Width="300" Height="150"
+							Padding="0"
+							HorizontalContentAlignment="Stretch"
+							VerticalContentAlignment="Stretch"
+							Title="Overview Map">
+
+			<toolkit:OverviewMap x:Name="OverView" Map="{Binding ElementName=Map}" Background="White">
+				<toolkit:OverviewMap.Layer>
+					<esri:ArcGISTiledMapServiceLayer 
+						Url="http://server.arcgisonline.com/ArcGIS/rest/services/ESRI_StreetMap_World_2D/MapServer" />
+				</toolkit:OverviewMap.Layer>
+			</toolkit:OverviewMap>
+
+		</local:DraggableWindow>
+
+		<!--Bookmarks window-->
+		<local:DraggableWindow IsOpen="False" x:Name="BookmarksWindow" Title="Bookmarks"
+							Grid.Row="2"
+							Padding="0" Margin="20,100"
+							VerticalAlignment="Top" HorizontalAlignment="Right"
+							HorizontalContentAlignment="Stretch" VerticalContentAlignment="Top">
+
+            <toolkit:Bookmark x:Name="Bookmark" Map="{Binding ElementName=Map}"
+							  Style="{StaticResource BookmarkStyle}" Width="200" />
+
+        </local:DraggableWindow>
+    </Grid>
+</UserControl>

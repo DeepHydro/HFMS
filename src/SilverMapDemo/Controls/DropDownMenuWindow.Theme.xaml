@@ -1,0 +1,67 @@
+﻿<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:local="clr-namespace:ESRI.ArcGIS.Samples"
+	xmlns:vsm="clr-namespace:System.Windows;assembly=System.Windows">
+
+
+	<Style TargetType="local:DropDownMenuWindow">
+		<Setter Property="Template">
+			<Setter.Value>
+				<ControlTemplate TargetType="local:DropDownMenuWindow">
+					<Popup x:Name="Popup" IsOpen="True"
+						   HorizontalOffset="{TemplateBinding HorizontalOffset}"
+						   VerticalOffset="{TemplateBinding VerticalOffset}">
+						<vsm:VisualStateManager.VisualStateGroups>
+							<vsm:VisualStateGroup x:Name="CommonStates">
+								<vsm:VisualState x:Name="Visible">
+									<Storyboard BeginTime="00:00:00" Duration="00:00:0.25">
+										<ObjectAnimationUsingKeyFrames BeginTime="00:00:00" 
+													Storyboard.TargetName="contentPresenter"
+													Storyboard.TargetProperty="Visibility">
+											<ObjectAnimationUsingKeyFrames.KeyFrames>
+												<DiscreteObjectKeyFrame KeyTime="00:00:00" Value="Visible" />
+											</ObjectAnimationUsingKeyFrames.KeyFrames>
+										</ObjectAnimationUsingKeyFrames>
+										<DoubleAnimation BeginTime="00:00:00" Storyboard.TargetName="contentPresenter" 
+														 Storyboard.TargetProperty="Opacity" To="1"
+														Duration="0:0:0.25" />
+									</Storyboard>
+								</vsm:VisualState>
+								<vsm:VisualState x:Name="Hidden">
+									<Storyboard BeginTime="00:00:00" Duration="0:0:.25">
+										<ObjectAnimationUsingKeyFrames  BeginTime="00:00:00" 
+													Storyboard.TargetName="contentPresenter"
+													Storyboard.TargetProperty="Visibility">
+											<ObjectAnimationUsingKeyFrames.KeyFrames>
+												<DiscreteObjectKeyFrame KeyTime="0:0:0.25" Value="Collapsed" />
+											</ObjectAnimationUsingKeyFrames.KeyFrames>
+										</ObjectAnimationUsingKeyFrames>
+										<DoubleAnimation BeginTime="0" 
+														 Storyboard.TargetName="contentPresenter" 
+														 Storyboard.TargetProperty="Opacity" To="0" Duration="0:0:0.25" />
+									</Storyboard>
+								</vsm:VisualState>
+							</vsm:VisualStateGroup>
+						</vsm:VisualStateManager.VisualStateGroups>
+
+						<ContentPresenter
+										x:Name="contentPresenter"
+										Opacity="0"
+										Content="{TemplateBinding Content}"
+										ContentTemplate="{TemplateBinding ContentTemplate}"
+										VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+										HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+										Margin="{TemplateBinding Padding}">
+							<ContentPresenter.Effect>
+								<DropShadowEffect Color="Black" Direction="-45" BlurRadius="20" Opacity=".75" />
+							</ContentPresenter.Effect>
+						</ContentPresenter>
+
+					</Popup>
+				</ControlTemplate>
+			</Setter.Value>
+		</Setter>
+	</Style>
+
+</ResourceDictionary>

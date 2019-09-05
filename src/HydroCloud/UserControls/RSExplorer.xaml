@@ -1,0 +1,129 @@
+﻿<UserControl xmlns:sdk="http://schemas.microsoft.com/winfx/2006/xaml/presentation/sdk"  x:Class="ESRI.ArcGIS.Samples.RSExplorer"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    d:DesignHeight="700" d:DesignWidth="300">
+    
+    <Grid x:Name="LayoutRoot">
+        <StackPanel Background="{StaticResource BaseColor}">
+            <StackPanel Orientation="Horizontal">
+                <ToggleButton Margin="2" Width="40" Height="32" Style="{StaticResource darkToggleButtonStyle}" IsChecked="False" x:Name="keepSeries">
+                    <ToggleButton.Content>
+                        <Image Source="/images/keep.png"></Image>
+                    </ToggleButton.Content>
+                </ToggleButton>
+                <Button Margin="2" Width="40" Height="32" Style="{StaticResource darkButtonStyle}"  x:Name="clearSeries" Click="clearSeries_Click">
+                    <Button.Content>
+                        <Image Source="/images/trash.png"></Image>
+                    </Button.Content>
+                </Button>
+                <Button Margin="2" Width="40" Height="32" Style="{StaticResource darkButtonStyle}" ToolTipService.ToolTip="Show Chart Data" Click="btnShowData_Click" >
+                    <Button.Content>
+                        <Image Source="/images/table.png"></Image>
+                    </Button.Content>
+                </Button>
+                <Button Margin="2" Width="40" Height="32" Style="{StaticResource darkButtonStyle}"  ToolTipService.ToolTip="Download Chart Data" Click="btnDownloadData_Click">
+                    <Button.Content>
+                        <Image Source="/images/download.png"></Image>
+                    </Button.Content>
+                </Button>
+            </StackPanel>
+            <sdk:Label Content="Rensor" Foreground="White" FontSize="12" Margin="5"/>
+            <ComboBox x:Name="cmbRensor" Margin="2" Height="24" Style="{StaticResource comboBox}" Foreground="White" SelectionChanged="cmbRensor_SelectionChanged"></ComboBox>
+            <sdk:Label Content="Variable" Foreground="White" FontSize="12" Margin="5"/>
+            <ComboBox x:Name="cmbVariable" Margin="2"  Height="24" Style="{StaticResource comboBox}" Foreground="White" SelectionChanged="cmbVariable_SelectionChanged"></ComboBox>
+            <sdk:Label Content="Season" Foreground="White" FontSize="12" Margin="5"/>
+            <ComboBox x:Name="cmbSeason" Margin="2"  Height="24" Style="{StaticResource comboBox}" Foreground="White">
+                <ComboBoxItem>Last 60 Days</ComboBoxItem>
+                <ComboBoxItem>Last Year</ComboBoxItem>
+            </ComboBox>
+            <sdk:Label Content="Time Period" Foreground="White" FontSize="12" Margin="5"/>
+            <Border Margin="2" Style="{StaticResource ESRIBorderStyle}">
+                <StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <sdk:Label Content="Start:" Foreground="White" FontSize="12" Margin="2"/>
+                        <sdk:DatePicker x:Name="startDate" Margin="20,2,2,2" Width="200"/>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <sdk:Label Content="End:  " Foreground="White" FontSize="12" Margin="2"/>
+                        <sdk:DatePicker x:Name="endDate" Margin="20,2,2,2" Width="200"/>
+                    </StackPanel>
+                </StackPanel>
+            </Border>
+            <sdk:Label Content="Animation" Foreground="White" FontSize="12" Margin="5"/>
+            <Border Style="{StaticResource ESRIBorderStyle}" Margin="2">
+                <StackPanel Margin="2,15,2,5">
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                        <Button x:Name="ForwardButton"  Style="{StaticResource darkButtonStyle}">
+                            <Button.Content>
+                                <StackPanel Orientation="Horizontal">
+                                    <Path Data="M0,0 L10,5 0,10 0,0" Fill="White" Opacity=".8" />
+                                    <Path Data="M0,0 L10,5 0,10 0,0" Fill="White" Opacity=".8" />
+                                    <Rectangle Fill="White" Opacity=".8" Width="3" Height="10" />
+                                </StackPanel>
+                            </Button.Content>
+                        </Button>
+                        <Button x:Name="RewindButton"  Style="{StaticResource darkButtonStyle}">
+                            <Button.Content>
+                                <StackPanel Orientation="Horizontal">
+                                    <Rectangle Fill="White" Opacity=".8" Width="3" Height="10" />
+                                    <Path Data="M10,0 L10,10 0,5 10,0" Fill="White" Opacity=".8" />
+                                    <Path Data="M10,0 L10,10 0,5 10,0" Fill="White" Opacity=".8" />
+                                </StackPanel>
+                            </Button.Content>
+                        </Button>
+                        <Button x:Name="PlayButton"  Style="{StaticResource darkButtonStyle}">
+                            <Button.Content>
+                                <Path Data="M0,0 L10,5 0,10 0,0" Fill="White" Opacity=".8" />
+                            </Button.Content>
+                        </Button>
+                        <Button x:Name="PauseButton" IsEnabled="False" Style="{StaticResource darkButtonStyle}">
+                            <Button.Content>
+                                <StackPanel Orientation="Horizontal">
+                                    <Rectangle Fill="White" Opacity=".8" Width="3" Height="10" Margin="0,0,3,0" />
+                                    <Rectangle Fill="White" Opacity=".8" Width="3" Height="10" />
+                                </StackPanel>
+                            </Button.Content>
+                        </Button>
+                        <Button x:Name="StopButton" IsEnabled="False" Style="{StaticResource darkButtonStyle}">
+                            <Button.Content>
+                                <Rectangle Fill="White" Opacity=".8" Width="10" Height="10" />
+                            </Button.Content>
+                        </Button>
+                    </StackPanel>
+                    <Grid Margin="5,2,5,2">
+                        <Rectangle Stroke="Black" Fill="Transparent" StrokeThickness="1" Height="10" 
+                                       HorizontalAlignment="Stretch" VerticalAlignment="Center" />
+                        <Rectangle Fill="Gray" Height="8" Margin="1" x:Name="DownloadProgress"
+									   Cursor="Hand"
+                                       HorizontalAlignment="Stretch" VerticalAlignment="Center" />
+                        <Ellipse Width="12" Height="12" x:Name="Position" Stroke="Gray" StrokeThickness="1"
+                                     HorizontalAlignment="Left" VerticalAlignment="Center" 
+                                     Margin="-6,0,0,0" IsHitTestVisible="False" >
+                            <Ellipse.Fill>
+                                <RadialGradientBrush Center="0.5,0.5" MappingMode="RelativeToBoundingBox">
+                                    <GradientStop Color="#FFFFFF" Offset="0.0" />
+                                    <GradientStop Color="#333333" Offset="0.7" />
+                                </RadialGradientBrush>
+                            </Ellipse.Fill>
+                        </Ellipse>
+                    </Grid>
+                    <Grid>
+                        <TextBlock Text="0:00" x:Name="CurrentTime"
+									   HorizontalAlignment="Left" Foreground="White" />
+                        <TextBlock Text="" x:Name="Status"
+									   HorizontalAlignment="Center" Foreground="White" />
+                        <TextBlock Text="" x:Name="TotalTime"
+									   HorizontalAlignment="Right" Foreground="White" />
+                    </Grid>
+                </StackPanel>
+            </Border>
+            <sdk:DataGrid x:Name="gridImages" Margin="2" MinHeight="300"  Background="{StaticResource BaseColor}" Foreground="White" FontSize="12" SelectionMode="Single" 
+                          ColumnHeaderStyle="{StaticResource DataGridHeaderGlassEffect}" RowBackground="{StaticResource BaseColor}"
+                          SelectionChanged="gridImages_SelectionChanged" AutoGenerateColumns="False" RowHeight="24"  GridLinesVisibility="Horizontal">
+            </sdk:DataGrid>
+        </StackPanel>
+    </Grid>
+</UserControl>

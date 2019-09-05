@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:import schemaLocation="http://localhost:1894/Service.svc?xsd=xsd2" namespace="http://schemas.microsoft.com/2003/10/Serialization/Arrays" />
+  <xs:import schemaLocation="http://localhost:1894/Service.svc?xsd=xsd3" namespace="http://schemas.datacontract.org/2004/07/HdyroCloud.Web" />
+  <xs:import schemaLocation="http://localhost:1894/Service.svc?xsd=xsd4" namespace="http://schemas.datacontract.org/2004/07/HdyroCloud.Web.RS" />
+  <xs:import schemaLocation="http://localhost:1894/Service.svc?xsd=xsd5" namespace="http://schemas.datacontract.org/2004/07/HydroCloud.Web.RS" />
+  <xs:element name="GetKeyWords">
+    <xs:complexType>
+      <xs:sequence />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetKeyWordsResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q1="http://schemas.microsoft.com/2003/10/Serialization/Arrays" minOccurs="0" name="GetKeyWordsResult" nillable="true" type="q1:ArrayOfstring" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetSite">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="id" type="xs:int" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetSiteResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q2="http://schemas.datacontract.org/2004/07/HdyroCloud.Web" minOccurs="0" name="GetSiteResult" nillable="true" type="q2:Station" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetAllSites">
+    <xs:complexType>
+      <xs:sequence />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetAllSitesResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q3="http://schemas.datacontract.org/2004/07/HdyroCloud.Web" minOccurs="0" name="GetAllSitesResult" nillable="true" type="q3:ArrayOfStation" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetVariableByName">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="varName" nillable="true" type="xs:string" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetVariableByNameResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q4="http://schemas.datacontract.org/2004/07/HdyroCloud.Web" minOccurs="0" name="GetVariableByNameResult" nillable="true" type="q4:Variable" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetVariable">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="varID" type="xs:int" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetVariableResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q5="http://schemas.datacontract.org/2004/07/HdyroCloud.Web" minOccurs="0" name="GetVariableResult" nillable="true" type="q5:Variable" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetSites">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q6="http://schemas.datacontract.org/2004/07/HdyroCloud.Web" minOccurs="0" name="qc" nillable="true" type="q6:QueryCriteria" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetSitesResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q7="http://schemas.datacontract.org/2004/07/HdyroCloud.Web" minOccurs="0" name="GetSitesResult" nillable="true" type="q7:ArrayOfStation" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetDoubleTimeSeries">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q8="http://schemas.datacontract.org/2004/07/HdyroCloud.Web" minOccurs="0" name="qc" nillable="true" type="q8:QueryCriteria" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetDoubleTimeSeriesResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q9="http://schemas.datacontract.org/2004/07/HdyroCloud.Web" minOccurs="0" name="GetDoubleTimeSeriesResult" nillable="true" type="q9:DoubleTimeSeries" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetGrid">
+    <xs:complexType>
+      <xs:sequence />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetGridResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q10="http://schemas.datacontract.org/2004/07/HdyroCloud.Web.RS" minOccurs="0" name="GetGridResult" nillable="true" type="q10:RegularGrid" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetTimeRange">
+    <xs:complexType>
+      <xs:sequence />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetTimeRangeResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q11="http://schemas.microsoft.com/2003/10/Serialization/Arrays" minOccurs="0" name="GetTimeRangeResult" nillable="true" type="q11:ArrayOfdouble" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetSlice">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="var_index" type="xs:int" />
+        <xs:element minOccurs="0" name="time_index" type="xs:int" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetSliceResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q12="http://schemas.microsoft.com/2003/10/Serialization/Arrays" minOccurs="0" name="GetSliceResult" nillable="true" type="q12:ArrayOfdouble" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetPointProfile">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="var_index" type="xs:int" />
+        <xs:element minOccurs="0" name="cell_index" type="xs:int" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetPointProfileResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q13="http://schemas.microsoft.com/2003/10/Serialization/Arrays" minOccurs="0" name="GetPointProfileResult" nillable="true" type="q13:ArrayOfdouble" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="DownloadImage">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="filename" nillable="true" type="xs:string" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="DownloadImageResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="DownloadImageResult" nillable="true" type="xs:string" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="DownloadLegend">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="filename" nillable="true" type="xs:string" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="DownloadLegendResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="DownloadLegendResult" nillable="true" type="xs:string" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetSensorImageRecord">
+    <xs:complexType>
+      <xs:sequence />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetSensorImageRecordResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q14="http://schemas.datacontract.org/2004/07/HydroCloud.Web.RS" minOccurs="0" name="GetSensorImageRecordResult" nillable="true" type="q14:ArrayOfSensorImageRecord" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

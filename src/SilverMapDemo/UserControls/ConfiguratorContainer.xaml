@@ -1,0 +1,12 @@
+﻿<UserControl x:Class="ESRI.ArcGIS.Samples.SilverMapDemo.UserControls.ConfiguratorContainer"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" >
+    <Grid Background="#eeeeee">
+		<Grid Height="20" Background="Black">
+			<Rectangle Fill="{StaticResource ReflectionGradient}" />
+			<TextBlock Text="{TemplateBinding Title}" Foreground="White" 
+					   FontWeight="Bold" HorizontalAlignment="Left" />
+		</Grid>
+		<ContentPresenter />
+	</Grid>
+</UserControl>

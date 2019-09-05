@@ -1,0 +1,19 @@
+﻿<ResourceDictionary 
+	xmlns="http://schemas.microsoft.com/client/2007" 
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
+	xmlns:local="clr-namespace:ESRI.ArcGIS.Samples"
+	xmlns:vsm="clr-namespace:System.Windows;assembly=System.Windows">
+
+	<ResourceDictionary.MergedDictionaries>
+
+		<ResourceDictionary Source="/SilverMapDemo;component/Controls/ScaleBar.Theme.xaml" />
+		<ResourceDictionary Source="/SilverMapDemo;component/Controls/VideoController.Theme.xaml" />
+		<ResourceDictionary Source="/SilverMapDemo;component/Controls/ConfiguratorContainer.Theme.xaml" />
+		<ResourceDictionary Source="/SilverMapDemo;component/Controls/DropDownMenuWindow.Theme.xaml" />
+		<ResourceDictionary Source="/SilverMapDemo;component/Controls/DropDownMenu.Theme.xaml" />
+		<ResourceDictionary Source="/SilverMapDemo;component/Controls/MapProgress.Theme.xaml" />
+		<ResourceDictionary Source="/SilverMapDemo;component/Controls/DraggableWindow.Theme.xaml" />
+
+	</ResourceDictionary.MergedDictionaries>
+
+</ResourceDictionary>

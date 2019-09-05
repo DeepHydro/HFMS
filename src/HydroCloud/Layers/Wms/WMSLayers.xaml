@@ -1,0 +1,38 @@
+﻿<esri:Map x:Name="mapView">
+    <esri:Map.Layers>
+        <esriWMS:WMSMapServiceLayer ID="OtherWMSLayer" 
+                     Url="http://mesonet.agron.iastate.edu/cgi-bin/wms/nexrad/n0r.cgi"
+                     ProxyUrl="~/ProxyHandler.ashx"
+                     SkipGetCapabilities="False"
+                     Layers="nexrad-n0r" Version="1.1.1" Opacity="0.7" />
+        
+        <!-- Some other WMS samples -->
+        <!--<esriWMS:WMSMapServiceLayer ID="AGSWMSLayer" 
+                     Url="http://sampleserver1.arcgisonline.com/ArcGIS/services/Specialty/ESRI_StatesCitiesRivers_USA/MapServer/WMSServer"			         
+                     SkipGetCapabilities="True"
+                     Layers="2" Version="1.3" Opacity="0.7"/>-->
+
+        <!--<esriWMS:WMSMapServiceLayer ID="AGSWMSLayer" 
+                     Url="http://sampleserver1.arcgisonline.com/ArcGIS/services/Specialty/ESRI_StatesCitiesRivers_USA/MapServer/WMSServer"		        
+                     Layers="0,2" Opacity="0.7" />-->
+
+        <!--<esriWMS:WMSMapServiceLayer ID="OtherWMSLayer" 
+                     Url="http://mesonet.agron.iastate.edu/cgi-bin/wms/nexrad/n0r.cgi"
+                     SkipGetCapabilities="True"
+                     Layers="nexrad-n0r" Version="1.1.1" Opacity="0.5" />-->
+
+        <!--<esriWMS:WMSMapServiceLayer ID="OtherWMSLayer" 
+                     Url="http://viz.globe.gov/viz-bin/wmt.cgi"
+                     ProxyUrl="~/ProxyHandler.ashx"
+                     SkipGetCapabilities="False"
+                     Layers="STATE,NATIONAL" Opacity="0.5" />-->
+
+        <!--Only shows up within extent of United States-->
+        <!--<esriWMS:WMSMapServiceLayer ID="OtherWMSLayer" 
+                     Url="http://terraservice.net/ogcmap.ashx"
+                     ProxyUrl="~/ProxyHandler.ashx"
+                     SkipGetCapabilities="True"
+                     Version="1.1.1"
+                     Layers="DRG" Visible="False" />-->
+    </esri:Map.Layers>
+</esri:Map>

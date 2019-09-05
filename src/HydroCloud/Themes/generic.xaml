@@ -1,0 +1,17 @@
+﻿<ResourceDictionary 
+	xmlns="http://schemas.microsoft.com/client/2007" 
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
+	xmlns:local="clr-namespace:ESRI.ArcGIS.Samples"
+	xmlns:vsm="clr-namespace:System.Windows;assembly=System.Windows">
+
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="/HydroCloud;component/Controls/ScaleBar.Theme.xaml" />
+        <ResourceDictionary Source="/HydroCloud;component/Controls/VideoController.Theme.xaml" />
+        <ResourceDictionary Source="/HydroCloud;component/Controls/ConfiguratorContainer.Theme.xaml" />
+        <ResourceDictionary Source="/HydroCloud;component/Controls/DropDownMenuWindow.Theme.xaml" />
+        <ResourceDictionary Source="/HydroCloud;component/Controls/MapProgress.Theme.xaml" />
+        <ResourceDictionary Source="/HydroCloud;component/Controls/DraggableWindow.Theme.xaml" />
+        <ResourceDictionary Source="/HydroCloud;component/UserControls/DropDownMenu.xaml" />
+    </ResourceDictionary.MergedDictionaries>
+
+</ResourceDictionary>

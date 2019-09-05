@@ -1,0 +1,14 @@
+﻿#grid file
+E:\Project\Shenzhen\Red Tide\Source\Matlab\modis\grid.txt
+# num variable
+2
+# variable names
+sst
+chl
+# variable files
+E:\Project\Shenzhen\Red Tide\Source\Matlab\modis\sst.dcx
+E:\Project\Shenzhen\Red Tide\Source\Matlab\modis\chl.dcx
+# Start Time
+2010/10/16
+# End Time
+2018/12/31
